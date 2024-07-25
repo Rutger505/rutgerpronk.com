@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS development
+FROM node:20.15.1-alpine3.20 AS development
 WORKDIR /app
 
 COPY . .
@@ -7,7 +7,7 @@ EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
 
-FROM node:lts-alpine AS dependencies
+FROM node:20.15.1-alpine3.20 AS dependencies
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -15,7 +15,7 @@ COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm ci
 
-FROM node:lts-alpine AS builder
+FROM node:20.15.1-alpine3.20 AS builder
 ENV NODE_ENV=production
 WORKDIR /app
 
@@ -25,7 +25,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 RUN npm run build
 
 
-FROM node:lts-alpine AS production
+FROM node:20.15.1-alpine3.20 AS production
 
 # Does not know what this does
 ENV NODE_ENV=production
